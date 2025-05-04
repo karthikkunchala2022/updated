@@ -1,0 +1,32 @@
+TODO:
+Staff profiles:
+    include error red messages if invalid input in edit profile form. - Edit Profile
+    picture(better if included) - View Profile, Edit Profile.
+    Staff List on backend
+
+
+
+
+DONE:
+card -> table
+Improve overall Design
+edit task same as create task
+Login
+Flex for some inputs and buttons in subtask
+Add pt-20 for all pages
+Search filter
+header at top
+Tasks created by faculty
+Improve notifications which should do popup
+Add background image
+Design header, footer
+Show subtasks as timeline
+show completed tasks after selecting mark as completed
+Common dashboard dont show transfer. show assign to me.
+Implement same in common dashboard
+Search bar
+Delete task pop up
+Transfer task form
+Edit task form
+3 dots option in subtasks
+
