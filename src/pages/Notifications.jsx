@@ -9,10 +9,28 @@ function Notifications() {
   const [activeNotifications, setActiveNotifications] = useState(initialNotifications);
   const [pastNotifications, setPastNotifications] = useState([]);
 
-  const markAsRead = (index) => {
+  const addNotification = async (newNotification) => {
+    setActiveNotifications((prev) => [newNotification, ...prev]);
+
+    // Trigger email notification
+    await sendNotificationEmail(
+      'user@example.com', // Replace with the user's email
+      'New Notification',
+      `You have a new notification: ${newNotification}`
+    );
+  };
+
+  const markAsRead = async (index) => {
     const note = activeNotifications[index];
     setActiveNotifications(activeNotifications.filter((_, i) => i !== index));
     setPastNotifications([note, ...pastNotifications]);
+
+    // Trigger email notification
+    await sendNotificationEmail(
+      'user@example.com', // Replace with the user's email
+      'Notification Update',
+      `You have a new notification: ${note}`
+    );
   };
 
   return (

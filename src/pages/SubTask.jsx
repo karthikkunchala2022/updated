@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import UploadButton from "../components/UploadButton";
 import SubtaskForm from "../components/SubtaskForm";
 import CommentList from "../components/CommentList";
+import { MoreVertical } from "lucide-react";
 
 const mockTask = {
   id: 1,
@@ -91,6 +92,43 @@ export default function SubTask() {
     setMenuOpen(null);
   };
 
+  const toggleMenu = (id) => {
+    setMenuOpen(menuOpen === id ? null : id);
+  };
+
+  const handleEdit = (subtask) => {
+    setEditMode(subtask.id);
+    setEditTitle(subtask.title);
+    setMenuOpen(null);
+  };
+
+  const handleDelete = (id) => {
+    setSubtasks((prev) => prev.filter((sub) => sub.id !== id));
+    setMenuOpen(null);
+  };
+
+  const handleMarkAsDone = (id) => {
+    setSubtasks((prev) =>
+      prev.map((sub) =>
+        sub.id === id
+          ? { ...sub, completed: true, completedAt: new Date() }
+          : sub
+      )
+    );
+    setMenuOpen(null);
+  };
+
+  const handleUndo = (id) => {
+    setSubtasks((prev) =>
+      prev.map((sub) =>
+        sub.id === id
+          ? { ...sub, completed: false, completedAt: null }
+          : sub
+      )
+    );
+    setMenuOpen(null);
+  };
+
   // --- Comments state & handlers (multi‐file) ---
   const [taskComments, setTaskComments] = useState([
     {
@@ -156,16 +194,45 @@ export default function SubTask() {
                   </p>
                 )}
               </div>
-              <button
-                onClick={() => setSubtaskToConfirm(sub)}
-                className={`px-3 py-1 rounded text-xs font-medium ${
-                  sub.completed
-                    ? "bg-green-100 text-green-600 hover:bg-green-200"
-                    : "bg-orange-100 text-orange-600 hover:bg-orange-200"
-                }`}
-              >
-                {sub.completed ? "Undo" : "Mark Complete"}
-              </button>
+              <div className="relative">
+                <button
+                  onClick={() => toggleMenu(sub.id)}
+                  className="p-1 rounded hover:bg-gray-200"
+                >
+                  <MoreVertical size={18} />
+                </button>
+                {menuOpen === sub.id && (
+                  <div className="absolute right-0 mt-2 w-32 bg-white border rounded shadow-lg z-10">
+                    {!sub.completed ? (
+                      <button
+                        onClick={() => handleMarkAsDone(sub.id)}
+                        className="block w-full px-4 py-2 text-left hover:bg-gray-100"
+                      >
+                        Mark as Done
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => handleUndo(sub.id)}
+                        className="block w-full px-4 py-2 text-left hover:bg-gray-100"
+                      >
+                        Undo
+                      </button>
+                    )}
+                    <button
+                      onClick={() => handleEdit(sub)}
+                      className="block w-full px-4 py-2 text-left hover:bg-gray-100"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(sub.id)}
+                      className="block w-full px-4 py-2 text-left text-red-600 hover:bg-gray-100"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Collapsible Section */}
